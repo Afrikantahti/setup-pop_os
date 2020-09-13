@@ -29,8 +29,37 @@
         url: "https://flathub.org/repo/appstream/io.github.jliljebl.Flowblade.flatpakref",
       }
     - {
-        name: "Flowblade",
+        name: "Exodus",
         url: "https://flathub.org/repo/appstream/io.exodus.Exodus.flatpakref",
+      }
+    - {
+        name: "Planner",
+        url: "https://flathub.org/repo/appstream/com.github.alainm23.planner.flatpakref",
+      }
+    - {
+        name: "Steam",
+        url: "https://flathub.org/repo/appstream/com.valvesoftware.Steam.flatpakref",
+      }
+    - {
+        name: "Gimp",
+        url: "https://flathub.org/repo/appstream/org.gimp.GIMP.flatpakref",
+      }
+    - {
+        name: "Signal",
+        url: "https://dl.flathub.org/repo/appstream/org.signal.Signal.flatpakref",
+      }
+    - {
+        name: "Nextcloud",
+        url: "https://https://dl.flathub.org/repo/appstream/com.nextcloud.desktopclient.nextcloud.flatpakref",
+      }
+
+    - {
+        name: "Digikam",
+        url: "https://flathub.org/repo/appstream/org.kde.digikam.flatpakref",
+      }
+    - {
+        name: "Kdenlive",
+        url: "https://flathub.org/repo/appstream/org.kde.kdenlive.flatpakref",
       }
 
 - name: remove several flatpak items
