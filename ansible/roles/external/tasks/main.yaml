@@ -48,6 +48,6 @@
   become: yes
   become_user: root
   apt:
-    name: "{{ chrome_package }}"
+    name: google-chrome-stable
     state: present
 
