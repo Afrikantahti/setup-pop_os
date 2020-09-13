@@ -1,0 +1,30 @@
+---
+# - name: Adding typora apt key
+#   apt_key:
+#     url: https://typora.io/linux/public-key.asc
+#     state: present
+#     become: yes
+
+# - name: Adding typora repository
+#   apt_repository:
+#     repo: deb https://typora.io/linux ./
+
+# - name: Installing typora
+#   apt:
+#     name: typora
+
+- name: Adding lazygit
+  apt_repository:
+    repo: ppa:lazygit-team/release
+
+- name: install lazygit
+  apt:
+    name: lazygit
+
+- name: zerotier
+  shell: curl -s https://install.zerotier.com | sudo bash
+
+- name: install zerotier
+  apt:
+    name: zerotier-one
+

@@ -1,0 +1,22 @@
+---
+
+- git:
+    become_user: "{{ user }}"
+    repo: git@github.com:Afrikantahti/nvim.git
+    dest:  "{{home}}/.config/nvim" 
+
+- git:
+    become_user: "{{ user }}"
+    repo: git@github.com:romkatv/powerlevel10k.git 
+    dest:  "{{home}}/powerlevel10k" 
+
+
+- git:
+    become_user: "{{ user }}"
+    repo: git@github.com:zsh-users/zsh-history-substring-search.git  
+    dest:  "{{home}}/git/zsh-history-substring-search" 
+    
+- name: get my dot fileee
+  shell: yadm clone https://github.com/Afrikantahti/dotfiles
+
+
