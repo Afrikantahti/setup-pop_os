@@ -52,7 +52,6 @@
         name: "Nextcloud",
         url: "https://https://dl.flathub.org/repo/appstream/com.nextcloud.desktopclient.nextcloud.flatpakref",
       }
-
     - {
         name: "Digikam",
         url: "https://flathub.org/repo/appstream/org.kde.digikam.flatpakref",
@@ -60,6 +59,14 @@
     - {
         name: "Kdenlive",
         url: "https://flathub.org/repo/appstream/org.kde.kdenlive.flatpakref",
+      }
+    - {
+        name: "Marktext",
+        url: "https://flathub.org/repo/appstream/com.github.marktext.marktext.flatpakref",
+      }
+    - {
+        name: "Onlyoffice",
+        url: "https://flathub.org/repo/appstream/org.onlyoffice.desktopeditors.flatpakref",
       }
 
 - name: remove several flatpak items
