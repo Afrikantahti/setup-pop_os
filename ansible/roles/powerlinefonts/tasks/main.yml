@@ -1,4 +1,6 @@
 ---
+- debug: var=local_user
+
 - set_fact:
     tempdir: /var/tmp/pline_fonts
     download: "{{ local_home }}/Download"
@@ -9,20 +11,28 @@
     depth: 1
     dest: "{{ tempdir }}"
 
+- name: Checking if JetBrains Mono font file exists
+  stat:
+    path: "/home/{{ local_user }}/.local/share/fonts/JetBrainsMono-Regular.ttf"
+  register: jetbrains_mono_file
+
 - name: Download JetBrains Mono font
   unarchive:
     src: https://download.jetbrains.com/fonts/JetBrainsMono-1.0.0.zip
-    dest: /home/{{ bash_username }}/.local/share/fonts
+    dest: "/home/{{ local_user }}/.local/share/fonts"
     remote_src: yes
-  become_user: "{{ bash_username }}"
   when: jetbrains_mono_file.stat.exists == False
+
+- name: Checking if Nerd JetBrains Mono font file exists
+  stat:
+    path: "/home/{{ local_user }}/share/fonts/JetBrains Mono Bold Italic Nerd Font Complete Mono.ttf"
+  register: jetbrains_mono_file
 
 - name: Download Nerd JetBrains Mono font
   unarchive:
     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip
-    dest: /home/{{ bash_username }}/.local/share/fonts
+    dest: "/home/{{ local_user }}/.local/share/fonts"
     remote_src: yes
-  become_user: "{{ bash_username }}"
   when: jetbrains_mono_file.stat.exists == False
 
 - name: run the installer
