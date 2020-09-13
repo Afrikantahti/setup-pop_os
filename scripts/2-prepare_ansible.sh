@@ -7,10 +7,12 @@ install_venv() {
    sudo apt-get install python-apt-common -y
    sudo apt-get install pylint -y
    sudo apt-get install python3-autopep8 -y
+   sudo apt install snapd -y
 }
 
 make_venv_dir() {
     mkdir -p $HOME/.virtualenvs
+    mkdir $HOME/.local/share/fonts
     # create the virtual environment
     python3 -m venv --system-site-packages $HOME/.virtualenvs/ansible 
 }
