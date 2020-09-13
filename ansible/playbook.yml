@@ -5,113 +5,120 @@
   vars:
     local_user: "{{ ansible_user_id }}"
     local_home: "{{ lookup('env','HOME') }}"
-    region_loc: "nl_NL.UTF-8"
+    region_loc: "us_US.UTF-8"
     new_hostname: devxps
-    gist_file: '{{ playbook_dir.split("/")[0:-1]|join("/") }}/18dafb104e93c9a2362ffe85c0dfd02e/dconf-settings.dconf'
+    #    gist_file: '{{ playbook_dir.split("/")[0:-1]|join("/") }}/18dafb104e93c9a2362ffe85c0dfd02e/dconf-settings.dconf'
     gnome_extension_ids:
-      - 1160	# Dash2Panel
-      - 277	  # impatience
-      - 906	  # sound input and output device chooser
-      - 351	  # Icon Hider
-      - 1251  # blyr
-      - 2660  # transparent panel
-      - 800   # remove dropdown arrows
-  
+      - 277 # impatience
+      - 906 # sound input and output device chooser
+      - 1251 # blyr
+      - 2660 # transparent panel
+      - 53 # pomodoro
   roles:
-      #- {role: powerlinefonts, tags: 'font'}
-    - {role: gui_apps, tags: 'app'}
-    - {role: apt_packages, tags: 'apt'}
-    - {role: dropbox, tags: 'dropbox'}
-    - {role: cryptomator, tags: 'crp'}
-    - {role: jaredhocutt.gnome_extensions, tags: 'gext'}
-   
-  tasks:      
-  - name: Ensure group "docker" exists
-    become: yes
-    group:
-      name: docker
-      state: present
+    - { role: powerlinefonts, tags: "font" }
+    - { role: gui_apps, tags: "app" }
+    - { role: apt_packages, tags: "apt" }
+    - { role: dot_files, tag: "dot" }
+    - { role: jaredhocutt.gnome_extensions, tags: "gext" }
+    - { role: external, tags: "external" }
 
-  - name: Set user settings
-    become: yes
-    user:
-       name: "{{ local_user }}"
-       shell: /usr/bin/zsh
-       groups: docker
-       append: yes
-       generate_ssh_key: yes
+  tasks:
+    - name: Ensure group "docker" exists
+      become: yes
+      group:
+        name: docker
+        state: present
 
-  - name: set the newgroup
-    become: yes
-    shell: "newgrp docker"
+    - name: Set user settings
+      become: yes
+      user:
+        name: "{{ local_user }}"
+        shell: /usr/bin/zsh
+        groups: docker
+        append: yes
+        # generate_ssh_key: yes
 
-  - name: Set hostname of the machine
-    become: yes
-    shell: "echo '{{ new_hostname }}' > '/etc/hostname'"
+    - name: set the newgroup
+      become: yes
+      shell: "newgrp docker"
 
-  #  TEST IF DIR EXSISTS, IF NOT > CREATE IT
-  - name: Create dirs
-    file:
-      path: "{{ item }}"
-      state: directory
-    with_items:
-      - "{{ local_home }}/storage"
-      - "{{ local_home }}/Apps"
-      - "{{ local_home }}/.local/bin"
-      - "{{ local_home }}/go"
+    # - name: Set hostname of the machine
+    #   become: yes
+    #   shell: "echo '{{ new_hostname }}' > '/etc/hostname'"
 
-  - name: Make sudo docker paswordless
-    become: yes
-    lineinfile:
-      path: /etc/sudoers.d/docker
-      line: '%sudo  ALL=(ALL:ALL) NOPASSWD:/snap/bin/docker'
-      create: yes
-      owner: root
-      mode: '0440'
+    #  TEST IF DIR EXSISTS, IF NOT > CREATE IT
+    - name: Create dirs
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ local_home }}/storage"
+        - "{{ local_home }}/Apps"
+        - "{{ local_home }}/.local/bin"
+        - "{{ local_home }}/.local/share/fonts"
+        - "{{ local_home }}/go"
+        - "{{ local_home }}/digikam"
+        - "{{ local_home }}/git"
 
-  - name: Test if oh-my-zsh is present.
-    stat:
-      path: "{{ local_home }}/.oh-my-zsh"
-    register: ohmyzsh
+    #  files exists
+    - name: Create Files
+      file:
+        path: "{{ item }}"
+        state: file
+      with_items:
+        - "{{ local_home }}/linux-backup.sh"
+        - "{{ local_home }}/linux-backup.log"
+        - "{{ local_home }}/.zshrc.local"
 
-  - name: Install "oh-my-zsh"
-    shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    when: not ohmyzsh.stat.exists
-  
-  - name: Clone dotfiles
-    git:
-      repo: "https://github.com/kevinjelnl/dotfiles.git"
-      dest: "{{ local_home }}/dotfiles"
-      update: no
-      
-  - name: Set dotfiles
-    shell: ./install
-    args:
-      chdir: "{{ local_home }}/dotfiles"
+    - name: Make sudo docker paswordless
+      become: yes
+      lineinfile:
+        path: /etc/sudoers.d/docker
+        line: "%sudo  ALL=(ALL:ALL) NOPASSWD:/snap/bin/docker"
+        create: yes
+        owner: root
+        mode: "0440"
 
-# # change the remote of the repo to SSH
-# git remote set-url origin git@github.com:kevinjelnl/dotfiles.git
+    - name: Test if oh-my-zsh is present.
+      stat:
+        path: "{{ local_home }}/.oh-my-zsh"
+      register: ohmyzsh
 
-      
-  - name: Ensure a locale exists
-    become: yes
-    locale_gen:
-      name: "{{ region_loc }}"
-      state: present
-
-  - name: Test if submodule with gist is present
-    stat:
-      path: "{{ gist_file }}"
-    register: dconfisthere
-
-  - name: load DCONF settings
-    shell: "dconf load '/' < '{{ gist_file }}'"
-    when: dconfisthere.stat.exists
-  
-  - name: Set multiple crons
-    cron:
-      name: "{{ item.name }}"
-      special_time: "{{ item.time }}"
-      job: "{{ item.job }}"
-    loop:
-      - { name: "dump dconf", time: "weekly", job: "/usr/bin/dconf dump / > {{ gist_file }}" }
+    - name: Install "oh-my-zsh"
+      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      when: not ohmyzsh.stat.exists
+    # - name: Clone dotfiles
+    #   git:
+    #     repo: "https://github.com/kevinjelnl/dotfiles.git"
+    #     dest: "{{ local_home }}/dotfiles"
+    #     update: no
+    # - name: Set dotfiles
+    #   shell: ./install
+    #   args:
+    #     chdir: "{{ local_home }}/dotfiles"
+    # # change the remote of the repo to SSH
+    # git remote set-url origin git@github.com:kevinjelnl/dotfiles.git
+    # - name: Ensure a locale exists
+    #   become: yes
+    #   locale_gen:
+    #     name: "{{ region_loc }}"
+    #     state: present
+    # - name: Test if submodule with gist is present
+    #   stat:
+    #     path: "{{ gist_file }}"
+    #   register: dconfisthere
+    # - name: load DCONF settings
+    #   shell: "dconf load '/' < '{{ gist_file }}'"
+    #   when: dconfisthere.stat.exists
+    # planner personal information
+    # - name: Set multiple crons
+    #   cron:
+    #     name: "{{ item.name }}"
+    #     special_time: "{{ item.time }}"
+    #     job: "{{ item.job }}"
+    #   loop:
+    #     - {
+    #         name: "dump dconf",
+    #         time: "weekly",
+    #         job: "/usr/bin/dconf dump / > {{ gist_file }}",
+    #       }
