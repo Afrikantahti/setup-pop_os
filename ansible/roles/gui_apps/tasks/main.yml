@@ -30,7 +30,7 @@
       }
     - {
         name: "Flowblade",
-        url: "https://flathub.org/apps/details/io.exodus.Exodus.flatpakref",
+        url: "https://flathub.org/repo/appstream/io.exodus.Exodus.flatpakref",
       }
 
 - name: remove several flatpak items
