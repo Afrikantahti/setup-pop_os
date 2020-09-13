@@ -28,3 +28,26 @@
   apt:
     name: zerotier-one
 
+- name: "apt | ensure Google linux signing key present"
+  become: yes
+  become_user: root
+  apt_key: 
+    url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    state: present
+    
+- name: "apt | ensure Google chrome repo present"
+  become: yes
+  become_user: root
+  apt_repository:
+    repo: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+    filename: "google-chrome"
+    state: present
+    update_cache: yes
+
+- name: "apt | ensure Google chrome present"
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ chrome_package }}"
+    state: present
+
