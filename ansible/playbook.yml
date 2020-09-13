@@ -121,13 +121,6 @@
         job: "{{ item.job }}"
       loop:
         - { name: "borg backup", time: "hourly", job: "linux-backup.sh" }
-
-    - name: Set multiple crons
-      cron:
-        name: "{{ item.name }}"
-        special_time: "{{ item.time }}"
-        job: "{{ item.job }}"
-      loop:
         - {
             name: "dump dconf",
             time: "weekly",
