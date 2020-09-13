@@ -12,8 +12,14 @@
 - git:
     repo: git@github.com:zsh-users/zsh-history-substring-search.git  
     dest:  "/home/{{ local_user }}/git/zsh-history-substring-search" 
-    
+
+- name: Checking if yadm already exists
+  stat:
+    path: "/home/{{ local_user }}/.config/yadm/repo.git"
+  register: yadm_here
+
 - name: get my dot fileee
   shell: yadm clone https://github.com/Afrikantahti/dotfiles
+  when: yadm_here == false
 
 
