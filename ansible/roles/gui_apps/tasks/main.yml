@@ -46,12 +46,12 @@
       }
     - {
         name: "Signal",
-        url: "https://dl.flathub.org/repo/appstream/org.signal.Signal.flatpakref",
+        url: "https://flathub.org/repo/appstream/org.signal.Signal.flatpakref",
       }
-    - {
-        name: "Nextcloud",
-        url: "https://https://dl.flathub.org/repo/appstream/com.nextcloud.desktopclient.nextcloud.flatpakref",
-      }
+    # - {
+    #     name: "Nextcloud",
+    #     url: "https://flathub.org/repo/appstream/com.nextcloud.desktopclient.nextcloud.flatpakref",
+    #   }
     - {
         name: "Digikam",
         url: "https://flathub.org/repo/appstream/org.kde.digikam.flatpakref",
@@ -99,11 +99,12 @@
       - vlc
       - pdfmixtool
       - okular
+      - todoist
+      - auto-cpufreq
 
 - name: remove a snap package
   become: yes
   snap:
     name:
-      - auto-cpufreq
       - codium
     state: absent
