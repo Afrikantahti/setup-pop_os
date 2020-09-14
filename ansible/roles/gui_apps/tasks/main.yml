@@ -108,3 +108,14 @@
     name:
       - codium
     state: absent
+
+- name: Populate service facts
+  service_facts:
+- debug:
+    msg: auto-cpufreq installed!
+  when: "'auto-cpufreq.service' in services"
+
+- name: auto-cpufreq service install
+  become: yes
+  shell: auto-cpufreq --install
+  when: "'auto-cpufreq.service' not in services"
