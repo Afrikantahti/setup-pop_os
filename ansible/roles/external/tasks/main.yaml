@@ -1,17 +1,20 @@
 ---
-# - name: Adding typora apt key
-#   apt_key:
-#     url: https://typora.io/linux/public-key.asc
-#     state: present
-#     become: yes
+- name: Add Typora apt key by id from a keyserver
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: BA300B7755AFCFAE
 
-# - name: Adding typora repository
-#   apt_repository:
-#     repo: deb https://typora.io/linux ./
+- name: Add Typora repository
+  apt_repository:
+    repo: 'deb https://typora.io/linux ./'
+    state: present
 
-# - name: Installing typora
-#   apt:
-#     name: typora
+- name: Install Typora
+  become: yes
+  apt:
+    pkg: typora
+    state: latest
+    update_cache: yes
 
 - name: Adding lazygit
   apt_repository:
