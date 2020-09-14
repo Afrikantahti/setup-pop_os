@@ -14,6 +14,7 @@
       - 1251 # blyr
       - 2660 # transparent panel
       - 53 # pomodoro
+      - 648 #Crypto ticker
 
   roles:
     - { role: powerlinefonts, tags: "font" }
