@@ -3,6 +3,7 @@
   become: yes
   apt:
     pkg:
+      - pandoc
       - snapd
       - fzf
       - htop
@@ -50,6 +51,7 @@
       - python3-pip
       - syncthing
       - brave-browser
+      - flameshot
         #Tasks found here : https://github.com/Dalee/ansible.install-nodejs
 - name: Checking node install
   shell: node --version | sed -e 's/^v14.*$/14/'
