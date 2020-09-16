@@ -94,13 +94,13 @@
   snap:
     name:
       - docker
-      - p3x-redis-ui
       - yubioath-desktop
       - vlc
       - pdfmixtool
       - okular
       - todoist
       - auto-cpufreq
+      - espanso
 
 - name: remove a snap package
   become: yes
