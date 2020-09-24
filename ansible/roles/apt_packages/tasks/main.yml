@@ -52,6 +52,8 @@
       - syncthing
       - brave-browser
       - flameshot
+      - graphviz
+      - jq
         #Tasks found here : https://github.com/Dalee/ansible.install-nodejs
 - name: Checking node install
   shell: node --version | sed -e 's/^v14.*$/14/'
