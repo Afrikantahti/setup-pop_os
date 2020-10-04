@@ -3,6 +3,17 @@
   become: yes
   apt:
     pkg:
+      - scrot
+      - autoconf
+      - automake 
+      - g++ 
+      - gcc 
+      - libpng-dev
+      - libpoppler-dev
+      - libpoppler-glib-dev
+      - libz-dev
+      - make
+      - pkg-config
       - pandoc
       - snapd
       - fzf
