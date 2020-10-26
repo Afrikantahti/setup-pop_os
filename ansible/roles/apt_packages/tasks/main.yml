@@ -1,8 +1,15 @@
 ---
 - name: Install apt packages
   become: yes
+  ignore_errors: true
   apt:
     pkg:
+      - tmispell-voikko
+      - xbindkeys
+      - x11-utils
+      - xdotool
+      - voikko-fi
+      - libenchant-voikko 
       - scrot
       - autoconf
       - automake 
@@ -73,10 +80,13 @@
   changed_when: false
 
 - name: Adding repository for node 14
+  become: yes
   shell: curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
   when: node_version.stdout is not search('14')
 
 - name: Install node
+  ignore_errors: true
+  become: yes
   apt: name=nodejs state=present
 
 - name: Checking yarn installation
@@ -86,17 +96,20 @@
   changed_when: false
 
 - name: Adding yarn repository key
+  become: yes
   apt_key:
     url: https://dl.yarnpkg.com/debian/pubkey.gpg
     state: present
   when: yarn_installed.rc != 0
 
 - name: Adding postgresql repository
+  become: yes
   apt_repository:
     repo: deb https://dl.yarnpkg.com/debian/ stable main
   when: yarn_installed.rc != 0
 
 - name: Adding yarn
+  become: yes
   apt:
     name: yarn
 
